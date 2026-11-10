@@ -1,0 +1,42 @@
+# ─────────────────────────────────────────────────────────────────────
+# .dockerignore — excludes files from the Docker build context.
+# Must sit next to the Dockerfile. Smaller context = faster builds,
+# safer builds, and cleaner image layers.
+#
+# Syntax: one pattern per line; "/" = directory; "*" = wildcard;
+#         "!" = re-include; "#" = comment.
+# ─────────────────────────────────────────────────────────────────────
+
+# ── Version control ──────────────────────────────────────────────────
+.git                 # full history, often hundreds of MB — never needed
+.gitignore           # not used inside the image
+
+# ── Documentation ────────────────────────────────────────────────────
+*.md                 # README/CHANGELOG belong next to source, not in image
+
+# ── Project data ─────────────────────────────────────────────────────
+data/                # bind-mounted at runtime; must not be baked into image
+
+# ── Python artifacts ─────────────────────────────────────────────────
+__pycache__/         # platform-specific bytecode, regenerated automatically
+*.pyc                # stray compiled files
+
+# ── ROS 2 build artifacts ────────────────────────────────────────────
+build/               # colcon output — huge, machine-specific, stale on rebuild
+install/             # colcon install space — same reasons
+log/                 # colcon logs — never needed in image
+
+# ── Editor / IDE ─────────────────────────────────────────────────────
+.vscode/             # user-specific workspace settings
+
+# ── Common ROS 2 leftovers ───────────────────────────────────────────
+*.bag                # rosbag recordings can be gigabytes
+colcon.meta          # usually generated locally, not needed in image
+
+# ── OS noise (Windows/macOS) ─────────────────────────────────────────
+.DS_Store            # macOS Finder metadata
+Thumbs.db            # Windows Explorer thumbnail cache
+
+# ── Local environment files ──────────────────────────────────────────
+.env                 # may contain secrets; Compose reads it on host, not build
+.env.*               # e.g. .env.local, .env.production

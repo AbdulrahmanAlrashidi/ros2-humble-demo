@@ -1,0 +1,17 @@
+services:
+  ros2:
+    build: .                                              # build image from Dockerfile in this dir
+    image: ros2_humble_demo:latest                        # tag the built image
+    container_name: ros2_humble_demo                      # fixed container name
+    network_mode: host                                    # share host network (ROS 2 DDS discovery)
+
+    environment:
+      - DISPLAY=${DISPLAY}                                # pass host X display
+      - LIBGL_ALWAYS_SOFTWARE=1                           # force software OpenGL (no GPU driver issues)
+      - QT_X11_NO_MITSHM=1                                # Qt workaround for Docker
+      - DEMO_MODE=${DEMO_MODE:-false}                     # DEFAULT false: no test on plain `up`
+      - XDG_RUNTIME_DIR=/tmp/runtime-root                 # Qt runtime dir (silences XDG warning; default fallback)
+
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw                  # X11 socket for GUI apps
+      - ./data:/ros2_ws/data                              # bind mount: host ./data ↔ container (persistent)
