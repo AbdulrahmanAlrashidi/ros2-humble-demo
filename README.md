@@ -24,38 +24,38 @@ your X11 / OpenGL setup works on this machine.
 
 ---
 
-## 🚀 First-Time Setup (do this once)
+## ⚠️ X11 Display Access (Run Once Per Session)
+
+ Allow Docker containers to open GUI windows (`turtlesim`, `RViz`) on your screen. This permission resets after logging out or rebooting:
 
 ```bash
-chmod +x start.sh entrypoint.sh
+xhost +local:root
 ```
 
-## 🖥️ Run the GUI Smoke Test
+## 🖥️ Run with GUI Smoke Test (`DEMO_MODE=true`)
+
+Runs the `turtlesim` and `RViz` verification test first, then drops you into the interactive shell:
 ```bash
-./start.sh
+DEMO_MODE=true docker compose run --rm --build ros2
 ```
 ---
-> ### ⚠️ Important: X11 permission resets on logout/reboot
->
-> Run the following command to fix it:
->
-> ```bash
-> xhost +local:root
-> ```
 
-## ⏹️ Stopping the Container
+
+
+
+## ▶️ Run Without GUI (Interactive Shell Only)
+
+Skips the GUI test (`DEMO_MODE=false` default) and drops you straight into the ROS 2 shell:
+```bash
+docker compose run --rm --build ros2
+```
+
+
+## ⏹️ Stop & Clean Up Containers
+
+Type `exit` inside the container shell to close and auto-remove it (`--rm`), or clean up any leftover containers with:
 ```bash
 docker compose down
-```
-
-## ▶️ Start the Container (no GUI test)
-```bash
-docker compose up -d
-```
-
-## 🧑‍💻 Then enter the shell
-```bash
-docker exec -it ros2_humble_demo bash
 ```
 
 ## 🔨  Rebuild the image after changes
@@ -65,9 +65,7 @@ docker compose up --build
 
 ## 💾 Persistent Data
 
-Everything you put in */ros2_ws/data* inside the container is preserved
-across docker compose down and docker compose up — it's just a normal
-folder on your host filesystem.
+Everything you put in `/ros2_ws/data` inside the container is preserved across container restarts — it maps directly to `./data` on your host filesystem.
 
 ## 🧹 Wipe the data directory 
 ```bash
