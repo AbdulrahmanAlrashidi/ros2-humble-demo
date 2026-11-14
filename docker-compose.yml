@@ -4,6 +4,7 @@ services:
     image: ros2_humble_demo:latest                        # tag the built image
     container_name: ros2_humble_demo                      # fixed container name
     network_mode: host                                    # share host network (ROS 2 DDS discovery)
+    init: true                                            # tini PID 1 so Ctrl+C (SIGINT) works cleanly
 
     environment:
       - DISPLAY=${DISPLAY}                                # pass host X display
