@@ -6,7 +6,7 @@ source /opt/ros/humble/setup.bash                         # load ROS 2 environme
 echo "🐢 ROS 2 Humble container started (DEMO_MODE=${DEMO_MODE})"
 echo ""
 
-if [ "${DEMO_MODE}" = "true" ]; then                      # test path: only when ./start.sh sets it
+if [ "${DEMO_MODE}" = "true" ]; then                      
 
     # ---------- Test 1: turtlesim + exactly one square ----------
     echo "🖥️  [1/2] Launching turtlesim..."
@@ -44,16 +44,14 @@ if [ "${DEMO_MODE}" = "true" ]; then                      # test path: only when
     echo "✅  turtlesim + RViz both launched successfully."
     echo "✅  X11 forwarding, DISPLAY and OpenGL are functional."
     echo ""
-    echo "  Please press Ctrl+C"
-    echo "💡  Enter the shell:  docker exec -it ros2_humble_demo bash"
-    echo "   Stop the container: docker compose down"
+    echo "  Please press Ctrl+C to exit "
     echo "════════════════════════════════════════════════════════════"
     echo ""
 
     exec sleep infinity                                   # detached mode: stay alive for `docker exec`
 else
     echo "💻 DEMO_MODE is not 'true' → starting interactive shell."
-    echo "   (No GUI smoke test. Run ./start.sh to run the test.)"
+    echo "   (No GUI smoke test. Run with DEMO_MODE=true to run the test.)"
     echo ""
     exec bash                                             # attached mode: user lands in shell
 fi
